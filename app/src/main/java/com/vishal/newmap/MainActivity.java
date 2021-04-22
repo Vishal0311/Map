@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
         LocationRequest locationRequest = LocationRequest.create()
                 .setInterval(1000)
-                .setSmallestDisplacement(10F) // In meters
+                //.setSmallestDisplacement(10F) // In meters
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback, Looper.getMainLooper());
