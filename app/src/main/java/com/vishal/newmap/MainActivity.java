@@ -54,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
                 for (Location location : locationResult.getLocations()) {
                     // Update UI with location data
                     // ...
-                    Log.d("Latitude", "onLocationResult"+ location.getLatitude());
-                    Log.d("Longitude", "onLocationResult"+ location.getLongitude());
+                    textView1.setText(String.valueOf(location.getLatitude()));
+                    textView2.setText(String.valueOf(location.getLongitude()));
                 }
             }
         };
@@ -76,10 +76,12 @@ public class MainActivity extends AppCompatActivity {
 
         LocationRequest locationRequest = LocationRequest.create()
                 .setInterval(1000)
-                //.setSmallestDisplacement(10F) // In meters
+                .setSmallestDisplacement(10F) // In meters
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback, Looper.getMainLooper());
 
+
     }
+
 }
