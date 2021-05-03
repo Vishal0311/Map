@@ -34,6 +34,13 @@ public class TrackerService extends Service {
 
     private void handleStart(String action) {
         Log.i("TAG", "handleStart: "+action);
+        new LocationUpdatesAction(getApplicationContext()).onStart().addOnSuccessListener(request -> {
+            PreferenceStorage storage = new PreferenceStorage(this);
+            String currentState = storage.getString(Constants.PREF_TRACKER_STATE, getString(R.string.tracker_action_stop));
+            if(currentState.equals(getString(R.string.tracker_action_stop))){
+                storage.putString(Constants.PREF_TRACKER_STATE, getString(R.string.tracker_state_ongoing) );
+            }
+        });
     }
 
 

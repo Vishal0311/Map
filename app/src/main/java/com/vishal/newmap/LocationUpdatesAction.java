@@ -19,8 +19,8 @@ public class LocationUpdatesAction {
     }
 
 
-    Intent trackerIntent = new Intent(mContext, TrackerService.class);
-    PendingIntent pendingIntent = PendingIntent.getActivity(
+    Intent trackerIntent = new Intent(mContext, LocationUpdateReceiver.class);
+    PendingIntent pendingIntent =  PendingIntent.getBroadcast(
             mContext, 0, trackerIntent,  PendingIntent.FLAG_UPDATE_CURRENT);
     LocationRequest locationRequest = LocationRequest.create()
             .setInterval(5000)
