@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--    To get one, follow this link, follow the directions and press "Create" at the end:-->
+
+<!--    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=40:3A:04:58:AD:04:D4:C2:3B:AA:C5:32:6E:FD:2A:35:D8:CE:86:11%3Bcom.vishal.bottomanddrawernav-->
+
+<!--    You can also add your credentials to an existing key, using these values:-->
+
+
+<resources>
+    <string name="google_maps_key"></string>
+</resources>
