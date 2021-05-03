@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">NewMap</string>
-
+    <string name="tracker_action_start">tracker.intent.action.START</string>
+    <string name="tracker_action_stop">tracker.intent.action.STOP</string>
 </resources>

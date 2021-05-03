@@ -32,7 +32,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
-    Button bt_loc;
+    Button bt_loc,start,stop;
     TextView textView1, textView2, textView3, textView4, textView5;
     FusedLocationProviderClient fusedLocationProviderClient;
     private LocationCallback locationCallback;
@@ -49,7 +49,38 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         bt_loc = findViewById(R.id.loc_button);
         textView1 = findViewById(R.id.textView1);
         textView2 = findViewById(R.id.textView2);
+        start=findViewById(R.id.start);
+        stop=findViewById(R.id.stop);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendBroadcast(new ExplicitIntent(MainActivity.this, R.string.tracker_action_start));
+
+            }
+        });
+
+        stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendBroadcast(new ExplicitIntent(MainActivity.this, R.string.tracker_action_stop));
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
         bt_loc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,7 +147,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             }
                         },
                         Looper.getMainLooper());
-
     }
 
     @Override
@@ -133,10 +163,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         } catch (Resources.NotFoundException e) {
             Log.e("msg: ", "Can't find style. Error: ", e);
         }
+
         mMap = googleMap;
         if (mlocation != null) {
             // Not implemented
         }
+
         PolylineOptions line = new PolylineOptions()
                 .width(15)
                 .color(Color.WHITE);

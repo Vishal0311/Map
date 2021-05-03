@@ -39,32 +39,18 @@
             android:hint="Data"
             android:id="@+id/textView2"/>
     </LinearLayout>
-    <LinearLayout
+
+    <Button
+        android:id="@+id/start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="16dp">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Data"
-            android:id="@+id/textView3"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Data"
-            android:id="@+id/textView4"/>
-    </LinearLayout>
+        android:text="START" />
 
-    <TextView
+    <Button
+        android:id="@+id/stop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:hint="Data"
-        android:id="@+id/textView5"/>
-
+        android:text="STOP" />
 
 
 </LinearLayout>
