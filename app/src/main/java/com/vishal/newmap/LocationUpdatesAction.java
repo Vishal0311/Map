@@ -19,9 +19,7 @@ public class LocationUpdatesAction {
     }
 
 
-    Intent trackerIntent = new Intent(mContext, LocationUpdateReceiver.class);
-    PendingIntent pendingIntent =  PendingIntent.getBroadcast(
-            mContext, 0, trackerIntent,  PendingIntent.FLAG_UPDATE_CURRENT);
+
     LocationRequest locationRequest = LocationRequest.create()
             .setInterval(5000)
             .setSmallestDisplacement(40F) // In meters
@@ -30,7 +28,7 @@ public class LocationUpdatesAction {
 
     public  Task<Void> onStart(){
         try {
-            return LocationServices.getFusedLocationProviderClient(mContext).requestLocationUpdates(locationRequest,pendingIntent);
+            return LocationServices.getFusedLocationProviderClient(mContext).requestLocationUpdates(locationRequest,getPendingIntent());
         }catch (SecurityException e){
             Toast.makeText(mContext, "Task<Void>", Toast.LENGTH_SHORT).show();
         }
@@ -38,8 +36,14 @@ public class LocationUpdatesAction {
     }
 
     public  Task<Void> onStop(){
-        return null;
-    }
+        return LocationServices.getFusedLocationProviderClient(mContext).removeLocationUpdates(
+                getPendingIntent());
 
+    }
+    private PendingIntent getPendingIntent() {
+        Intent trackerIntent = new Intent(mContext, LocationUpdateReceiver.class);
+        return PendingIntent.getBroadcast(
+                mContext, 0, trackerIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
 
 }

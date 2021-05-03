@@ -12,9 +12,14 @@ public class TrackerActionReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         LocationResult result =  LocationResult.extractResult(intent);
-        if(result != null){
-            Location currentLocation = result.getLastLocation();
-        }
+
+            if (result != null) {
+                Location currentLocation = result.getLastLocation();
+                if(currentLocation != null){
+                    // Save it to db
+                    }
+            }
+
         Log.i("TrackerActionReceiver", "onReceive(" +context + "," + intent + ")");
         Intent serviceIntent = new Intent(context, TrackerService.class);
         serviceIntent.putExtra("com.vishal.newmap.TRACKER_ACTIONS", intent.getAction());
