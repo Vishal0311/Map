@@ -30,6 +30,8 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.vishal.newmap.database.AppDatabase;
+import com.vishal.newmap.database.LocationEntity;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
     Button bt_loc,start,stop;
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private LocationCallback locationCallback;
     private Location mlocation = null;
     private GoogleMap mMap;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,25 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         start=findViewById(R.id.start);
         stop=findViewById(R.id.stop);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        AppDatabase database=  AppDatabase.getInstance(getApplicationContext());
+
+
+        SimpleLocation simpleLocation=new SimpleLocation();
+        simpleLocation.setLatitude(23.32);
+        simpleLocation.setLongitude(45.65);
+
+        LocationEntity locationEntity=new LocationEntity();
+        locationEntity.writeTs=System.currentTimeMillis()/1000.0;
+
+        locationEntity.location = simpleLocation;
+
+        try {
+            new Thread(() ->{
+                database.locationDao().insertAll(locationEntity);
+            }){{start();}}.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
 
         start.setOnClickListener(new View.OnClickListener() {
@@ -68,8 +90,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 sendBroadcast(new ExplicitIntent(MainActivity.this, R.string.tracker_action_stop));
             }
         });
-
-
 
 
 

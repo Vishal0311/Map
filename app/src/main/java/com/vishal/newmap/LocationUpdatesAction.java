@@ -3,7 +3,7 @@ package com.vishal.newmap;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
+import android.util.Log;
 
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -30,7 +30,7 @@ public class LocationUpdatesAction {
         try {
             return LocationServices.getFusedLocationProviderClient(mContext).requestLocationUpdates(locationRequest,getPendingIntent());
         }catch (SecurityException e){
-            Toast.makeText(mContext, "Task<Void>", Toast.LENGTH_SHORT).show();
+            Log.i("LocationUpdatesAction", "Error while starting location update"+e);
         }
         return null;
     }

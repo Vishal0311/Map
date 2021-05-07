@@ -36,6 +36,8 @@ public class TrackerService extends Service {
             if(currentState.equals(getString(R.string.tracker_state_ongoing))){
                 storage.putString(Constants.PREF_TRACKER_STATE, getString(R.string.tracker_state_stopped) );
             }
+        }).addOnFailureListener(error->{
+            Log.i("TrackerService", "Error while starting location update"+error);
         });
     }
 
@@ -47,6 +49,8 @@ public class TrackerService extends Service {
             if(currentState.equals(getString(R.string.tracker_state_stopped))){
                 storage.putString(Constants.PREF_TRACKER_STATE, getString(R.string.tracker_state_ongoing) );
             }
+        }).addOnFailureListener(error->{
+            Log.i("TrackerService", "Error while starting location update"+error);
         });
     }
 
