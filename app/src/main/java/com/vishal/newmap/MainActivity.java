@@ -195,22 +195,23 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(new LatLng(Double.NaN, Double.NaN));
         Marker marker = mMap.addMarker(markerOptions);
-        getlocation((location -> {
-            // Add the marker options to the map first. This will return a Marker instance
-            // which we could use to update the update it's positions later
-            Log.d("setOnClickListener", "onClick: location from callback " + location);
-            // Add a marker in Sydney and move the camera
-            LatLng sydney = new LatLng(location.getLatitude(), location.getLongitude());
-            //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            CameraUpdate center = CameraUpdateFactory.newLatLng(sydney);
-            CameraUpdate zoom = CameraUpdateFactory.zoomTo(17);
-            line.add(sydney);
-            marker.setPosition(sydney);
-            mMap.addPolyline(line);
-            mMap.moveCamera(center);
-            mMap.animateCamera(zoom);
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 16f));
-        }));
+        AppDatabase.getInstance(getApplicationContext()).locationDao().getAll()
+        .observe(this, (simpleLocation)->{
+        // Add the marker options to the map first. This will return a Marker instance
+        // which we could use to update the update it's positions later
+        Log.d("setOnClickListener", "onClick: location from callback " + simpleLocation);
+        // Add a marker in Sydney and move the camera
+        LatLng sydney = new LatLng(simpleLocation.getLatitude(), simpleLocation.getLongitude());
+        //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        CameraUpdate center = CameraUpdateFactory.newLatLng(sydney);
+        CameraUpdate zoom = CameraUpdateFactory.zoomTo(17);
+        line.add(sydney);
+        marker.setPosition(sydney);
+        mMap.addPolyline(line);
+        mMap.moveCamera(center);
+        mMap.animateCamera(zoom);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 16f));
+    });
     }
 
     interface LocationResultCallback {
