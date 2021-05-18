@@ -15,22 +15,26 @@ public class LocationUpdateReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         LocationResult result =  LocationResult.extractResult(intent);
-        Location currentLocation = result.getLastLocation();
-        LocationEntity locationEntity=new LocationEntity();
-        locationEntity.writeTs=System.currentTimeMillis()/1000.0;
-        SimpleLocation simpleLocation=new SimpleLocation();
-        locationEntity.location =simpleLocation ;
-        simpleLocation.setLatitude(currentLocation.getLatitude());
-        simpleLocation.setLongitude(currentLocation.getLongitude());
-        AppDatabase database=AppDatabase.getInstance(context);
+        if(result!=null) {
+            Location currentLocation = result.getLastLocation();
+            LocationEntity locationEntity = new LocationEntity();
+            locationEntity.writeTs = System.currentTimeMillis() / 1000.0;
+            SimpleLocation simpleLocation = new SimpleLocation();
+            locationEntity.location = simpleLocation;
+            simpleLocation.setLatitude(currentLocation.getLatitude());
+            simpleLocation.setLongitude(currentLocation.getLongitude());
+            AppDatabase database = AppDatabase.getInstance(context);
 
 
-        try {
-            new Thread(() ->{
-                database.locationDao().insertAll(locationEntity);
-            }){{start();}}.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            try {
+                new Thread(() -> {
+                    database.locationDao().insert(locationEntity);
+                }) {{
+                    start();
+                }}.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
     }

@@ -11,13 +11,16 @@ import java.util.List;
 @Dao
 public interface LocationDao {
     @Insert
-    void insertAll(LocationEntity locationEntity);
+    void insert(LocationEntity locationEntity);
 
     @Query("DELETE FROM locations")
     void deleteAll();
 
     @Query("SELECT * FROM locations")
     LiveData<List<LocationEntity>> getAll();
+
+    @Query("SELECT * FROM locations ORDER BY id DESC LIMIT 1")
+    LiveData<LocationEntity>getCurrentLocation();
 
 
 }

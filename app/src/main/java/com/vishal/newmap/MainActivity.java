@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         try {
             new Thread(() ->{
-                database.locationDao().insertAll(locationEntity);
+                database.locationDao().insert(locationEntity);
             }){{start();}}.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -77,8 +79,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         start.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
+                if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
                 sendBroadcast(new ExplicitIntent(MainActivity.this, R.string.tracker_action_start));
 
             }
@@ -195,23 +200,24 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(new LatLng(Double.NaN, Double.NaN));
         Marker marker = mMap.addMarker(markerOptions);
-        AppDatabase.getInstance(getApplicationContext()).locationDao().getAll()
-        .observe(this, (simpleLocation)->{
-        // Add the marker options to the map first. This will return a Marker instance
-        // which we could use to update the update it's positions later
-        Log.d("setOnClickListener", "onClick: location from callback " + simpleLocation);
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(simpleLocation.getLatitude(), simpleLocation.getLongitude());
-        //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        CameraUpdate center = CameraUpdateFactory.newLatLng(sydney);
-        CameraUpdate zoom = CameraUpdateFactory.zoomTo(17);
-        line.add(sydney);
-        marker.setPosition(sydney);
-        mMap.addPolyline(line);
-        mMap.moveCamera(center);
-        mMap.animateCamera(zoom);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 16f));
-    });
+        AppDatabase.getInstance(getApplicationContext()).locationDao().getCurrentLocation()
+                .observe(this, (LocationEntity simpleLocation) -> {
+                    // Add the marker options to the map first. This will return a Marker instance
+                    // which we could use to update the update it's positions later
+                    Log.d("setOnClickListener", "onClick: location from callback " + simpleLocation);
+                    // Add a marker in Sydney and move the camera
+                    LatLng sydney = new LatLng(simpleLocation.location.getLatitude(),
+                            simpleLocation.location.getLongitude());
+                    //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+                    CameraUpdate center = CameraUpdateFactory.newLatLng(sydney);
+                    CameraUpdate zoom = CameraUpdateFactory.zoomTo(17);
+                    line.add(sydney);
+                    marker.setPosition(sydney);
+                    mMap.addPolyline(line);
+                    mMap.moveCamera(center);
+                    mMap.animateCamera(zoom);
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 16f));
+                });
     }
 
     interface LocationResultCallback {
