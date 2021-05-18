@@ -3,13 +3,13 @@ package com.vishal.newmap;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Compute {
-    Metrics metrics;
-    int weight=70;
-    int calories;
-    Float avgSpeed;
-    Double dis;
-    Double duration;
+public class Computer {
+
+    private int weight=70;
+    private int calories;
+    private Float avgSpeed;
+    private  Double dis;
+    private  Double duration;
 
     public  Metrics computeMetrics(List<SimpleLocation> locations){
         ArrayList<Float> distances =new ArrayList<>();
