@@ -1,5 +1,7 @@
 package com.vishal.newmap;
 
+import android.location.Location;
+
 public class SimpleLocation {
     public SimpleLocation(){
 
@@ -11,6 +13,12 @@ public class SimpleLocation {
     Float speed;
     Float accuracy;
     Float bearing;
+
+    public float distanceTo(SimpleLocation destination) {
+        float[] results = new float[1];
+        Location.distanceBetween(latitude, longitude, destination.getLatitude(), destination.getLongitude(), results);
+        return results[0];
+    }
 
     public SimpleLocation(Double latitude, Double longitude, Double altitude, Double ts, Float speed, Float accuracy, Float bearing) {
         this.latitude = latitude;
