@@ -15,7 +15,7 @@ public class Computer {
         ArrayList<Float> distances =new ArrayList<>();
         List<Double> times = new ArrayList<>();
 
-            for (int i = 0; i < locations.size(); i++) {
+            for (int i = 0; i < locations.size()-1; i++) {
                 SimpleLocation startLocation = locations.get(i);
                 SimpleLocation nextLocation = locations.get(i + 1);
                 float distance = startLocation.distanceTo(nextLocation);
@@ -28,7 +28,7 @@ public class Computer {
 
             List<Double> timeDeltas = new ArrayList<>();
             int index = 0;
-            while (index < (times.size() )) {
+            while (index < (times.size() -1)) {
                 timeDeltas.add(times.get(index + 1) - times.get(index));
                 index++;
             }

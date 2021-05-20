@@ -3,7 +3,6 @@
 package com.vishal.newmap;
 
 
-
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -32,6 +31,8 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.vishal.newmap.database.AppDatabase;
 import com.vishal.newmap.database.LocationEntity;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -70,12 +71,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         textView1 = findViewById(R.id.textView1);
 
         textView2 = findViewById(R.id.textView2);
+        textView3=findViewById(R.id.textView3);
+        textView4=findViewById(R.id.textView4);
 
         start = findViewById(R.id.start);
 
         stop = findViewById(R.id.stop);
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+
 
 
         start.setOnClickListener(
@@ -114,8 +119,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         });
         AppDatabase.getInstance(getApplicationContext()).locationDao().getAll()
-                .observe(this, (locations -> {
-                    // Call computeMetrics here
+                .observe(this, (entities -> {
+                    List<SimpleLocation> locations = new ArrayList<>();
+                    for (LocationEntity entity : entities) {
+                        locations.add(entity.location);
+                    }
+                    Metrics metrics = new Computer().computeMetrics(locations);
+                    textView5.setText(metrics.getCalories());
+                    textView4.setText(String.valueOf(metrics.getDistance()));
                 }));
 
     }
