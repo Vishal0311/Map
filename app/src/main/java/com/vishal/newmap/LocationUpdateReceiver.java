@@ -1,8 +1,4 @@
-
-
 package com.vishal.newmap;
-
-
 
 import android.content.BroadcastReceiver;
 
@@ -18,12 +14,7 @@ import com.vishal.newmap.database.AppDatabase;
 
 import com.vishal.newmap.database.LocationEntity;
 
-
-
 public class LocationUpdateReceiver extends BroadcastReceiver {
-
-
-
     @Override
 
     public void onReceive(Context context, Intent intent) {
@@ -33,22 +24,14 @@ public class LocationUpdateReceiver extends BroadcastReceiver {
         if (result != null && result.getLastLocation() != null) {
 
             Location currentLocation = result.getLastLocation();
+         LocationEntity locationEntity = new LocationEntity();
 
-            LocationEntity locationEntity = new LocationEntity();
+            locationEntity.writeTs = System.currentTimeMillis() / 1000F;
 
-            locationEntity.writeTs = System.currentTimeMillis() / 1000.0;
-
-            SimpleLocation simpleLocation = new SimpleLocation();
-
-            locationEntity.location = simpleLocation;
-
-            simpleLocation.setLatitude(currentLocation.getLatitude());
-
-            simpleLocation.setLongitude(currentLocation.getLongitude());
+            locationEntity.location = SimpleLocation.fromLocation(currentLocation);
 
             AppDatabase database = AppDatabase.getInstance(context);
-
-            try {
+           try {
 
                 new Thread(() -> {
 
@@ -59,8 +42,7 @@ public class LocationUpdateReceiver extends BroadcastReceiver {
                     start();
 
                 }}.join();
-
-            } catch (InterruptedException e) {
+         } catch (InterruptedException e) {
 
                 e.printStackTrace();
 
@@ -71,4 +53,3 @@ public class LocationUpdateReceiver extends BroadcastReceiver {
     }
 
 }
-
